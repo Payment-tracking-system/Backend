@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import {ConfigService} from "@nestjs/config";
-import {ValidationPipe} from "@nestjs/common";
-import {AppModule} from "./modules/app/app.module";
+import { ConfigService } from '@nestjs/config';
+import { ValidationPipe } from '@nestjs/common';
+import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,13 +13,13 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',
     credentials: true,
-    methods: ['GET', 'POST', 'DELETE', 'PUT']
-  })
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  });
 
   await app.listen(PORT, () =>
-      console.log(
-          `\x1b[34m[Telegram Server] \x1b[32mСервер запущен на порту: \x1b[33m${PORT}\x1b[0m`,
-      ),
+    console.log(
+      `\x1b[34m[Telegram Server] \x1b[32mСервер запущен на порту: \x1b[33m${PORT}\x1b[0m`,
+    ),
   );
 }
 bootstrap();
