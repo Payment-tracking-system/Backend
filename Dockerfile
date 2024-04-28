@@ -6,7 +6,7 @@ COPY . .
 
 RUN yarn install
 
-RUN yarn run build
+RUN yarn build
 
 RUN rm -rf ./src
 
