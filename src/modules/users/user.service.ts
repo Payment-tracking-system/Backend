@@ -31,4 +31,20 @@ export class UserService {
       throw new Error(e.message);
     }
   }
+
+  async getUsers(limit: number, page: number) {
+    try {
+      const users = await this.userRepository.findAll({
+        limit: limit,
+        offset: (page - 1) * limit,
+      });
+
+      const totalUsers = await this.userRepository.count();
+      const totalPages = Math.ceil(totalUsers / limit);
+
+      return { users, totalPages };
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }

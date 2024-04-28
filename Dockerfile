@@ -1,4 +1,15 @@
-FROM ubuntu:latest
-LABEL authors="kdani"
+FROM node:21
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN yarn install
+
+RUN yarn run build
+
+RUN rm -rf ./src
+
+EXPOSE 8000
+
+CMD ["yarn", "run", "prod"]

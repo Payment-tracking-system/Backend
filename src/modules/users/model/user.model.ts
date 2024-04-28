@@ -1,5 +1,5 @@
 import { Model } from 'sequelize-typescript';
-import { AllowNull, Column, DataType, Table } from 'sequelize-typescript';
+import { AllowNull, Column, Table } from 'sequelize-typescript';
 
 @Table({ tableName: 'users' })
 export class UserModel extends Model<UserModel> {

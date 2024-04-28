@@ -6,8 +6,8 @@ import { UserService } from '../users/user.service';
 @Injectable()
 export class BotService {
   constructor(
-    private readonly configService: ConfigService,
-    private readonly userService: UserService,
+      private readonly configService: ConfigService,
+      private readonly userService: UserService,
   ) {}
 
   public readonly checkGroupMembership = async (ctx: Context) => {
@@ -18,7 +18,7 @@ export class BotService {
     }
     if (ctx.chat.type !== 'group') {
       await ctx.reply(
-        '❌ Отказ в доступе \n \n Извините, вас нет в списке разрешенных пользователей.',
+          '❌ Отказ в доступе \n \n Извините, вас нет в списке разрешенных пользователей.',
       );
       return false;
     }
@@ -27,12 +27,12 @@ export class BotService {
     const chatMember = await ctx.telegram.getChatMember(chatId, ctx.from.id);
 
     if (
-      chatMember.status !== 'administrator' &&
-      chatMember.status !== 'member' &&
-      chatMember.status !== 'creator'
+        chatMember.status !== 'administrator' &&
+        chatMember.status !== 'member' &&
+        chatMember.status !== 'creator'
     ) {
       await ctx.reply(
-        '❌ Отказ в доступе \n \n Извините, вам недостаточно прав.',
+          '❌ Отказ в доступе \n \n Извините, вам недостаточно прав.',
       );
       return false;
     }
@@ -45,25 +45,42 @@ export class BotService {
     const user = await this.userService.getUserById(userId);
     if (!user) {
       await ctx.reply(
-        `👋 Привет ${ctx.message.from.first_name}! \n \n ❓ Данный бот предназначен для проверки статуса оплаты`,
-        {
-          reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: 'Добавить свой профиль ➕',
-                  callback_data: 'check_payment_status',
-                },
+          `👋 Привет ${ctx.message.from.first_name}! \n \n ❓ Данный бот предназначен для проверки статуса оплаты`,
+          {
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: 'Добавить свой профиль ➕',
+                    callback_data: 'check_payment_status',
+                  },
+                ],
               ],
-            ],
+            },
           },
-        },
       );
       return;
     }
 
     if (ctx.chat.type === 'group') {
       await ctx.reply(
+          `👋 Привет ${ctx.message.from.first_name}! \n \n ❓ Данный бот предназначен для проверки статуса оплаты`,
+          {
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: 'Запустить 🚀',
+                    url: this.configService.get('bot_url'),
+                  },
+                ],
+              ],
+            },
+          },
+      );
+    }
+
+    await ctx.reply(
         `👋 Привет ${ctx.message.from.first_name}! \n \n ❓ Данный бот предназначен для проверки статуса оплаты`,
         {
           reply_markup: {
@@ -71,29 +88,12 @@ export class BotService {
               [
                 {
                   text: 'Запустить 🚀',
-                  url: this.configService.get('bot_url'),
+                  web_app: { url: this.configService.get('frontend_url') },
                 },
               ],
             ],
           },
         },
-      );
-    }
-
-    await ctx.reply(
-      `👋 Привет ${ctx.message.from.first_name}! \n \n ❓ Данный бот предназначен для проверки статуса оплаты`,
-      {
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: 'Запустить 🚀',
-                web_app: { url: this.configService.get('frontend_url') },
-              },
-            ],
-          ],
-        },
-      },
     );
   }
 
@@ -105,14 +105,14 @@ export class BotService {
     }
     await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
     await ctx.reply(
-      `✅ Ваш аккаунт был добавлен \n \n Теперь вы можете пользоваться ботом!`,
-      {
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: 'Запустить 🚀', url: this.configService.get('bot_url') }],
-          ],
+        `✅ Ваш аккаунт был добавлен \n \n Теперь вы можете пользоваться ботом!`,
+        {
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: 'Запустить 🚀', url: this.configService.get('bot_url') }],
+            ],
+          },
         },
-      },
     );
   }
 }
